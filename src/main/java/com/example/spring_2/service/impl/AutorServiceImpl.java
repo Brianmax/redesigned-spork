@@ -1,9 +1,12 @@
 package com.example.spring_2.service.impl;
 
 import com.example.spring_2.dto.AutorCreateRequest;
+import com.example.spring_2.dto.ReniecResponse;
 import com.example.spring_2.entity.AutorEntity;
+import com.example.spring_2.feignClient.ReniecClient;
 import com.example.spring_2.repository.AutorRepository;
 import com.example.spring_2.service.AutorService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -11,8 +14,12 @@ import java.util.List;
 @Service
 public class AutorServiceImpl implements AutorService {
     private AutorRepository autorRepository;
-    public AutorServiceImpl(AutorRepository autorRepository) {
+    private ReniecClient reniecClient;
+    @Value("${reniec.token}")
+    private String token;
+    public AutorServiceImpl(AutorRepository autorRepository, ReniecClient reniecClient) {
         this.autorRepository = autorRepository;
+        this.reniecClient = reniecClient;
     }
     @Override
     public AutorEntity createAutor(AutorCreateRequest autorRequest) {
@@ -23,13 +30,13 @@ public class AutorServiceImpl implements AutorService {
             return null;
         }
         // todo: consultar a la api de RENIEC la informacion
-
+        ReniecResponse infoPersona = reniecClient.getPersonaInfo(autorRequest.getDni(), token);
         // ya tenemos la informacion de reniec
 
         AutorEntity autorEntity = new AutorEntity();
-        // autorEntity.setNombre();
-        // autorEntity.setApellidoPaterno();
-        // autorEntity.setApellidoMaterno();
+        autorEntity.setNombre(infoPersona.getFirstName());
+        autorEntity.setApellidoPaterno(infoPersona.getFirstLastName());
+        autorEntity.setApellidoMaterno(infoPersona.getSecondLastName());
         autorEntity.setCreatedAt(new Date());
         autorEntity.setNumLibros(0);
         autorEntity.setEstado(true);
