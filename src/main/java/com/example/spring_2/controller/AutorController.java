@@ -1,6 +1,6 @@
 package com.example.spring_2.controller;
 
-import com.example.spring_2.dto.AutorCreateRequest;
+import com.example.spring_2.dto.request.AutorCreateRequest;
 import com.example.spring_2.entity.AutorEntity;
 import com.example.spring_2.service.AutorService;
 import org.springframework.web.bind.annotation.PostMapping;

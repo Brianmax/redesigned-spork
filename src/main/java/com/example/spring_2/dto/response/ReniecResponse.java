@@ -1,8 +1,6 @@
-package com.example.spring_2.dto;
+package com.example.spring_2.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
 
 public class ReniecResponse {
     @JsonProperty("first_name")

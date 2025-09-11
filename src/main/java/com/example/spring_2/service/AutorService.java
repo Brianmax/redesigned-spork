@@ -1,6 +1,6 @@
 package com.example.spring_2.service;
 
-import com.example.spring_2.dto.AutorCreateRequest;
+import com.example.spring_2.dto.request.AutorCreateRequest;
 import com.example.spring_2.entity.AutorEntity;
 
 import java.util.List;

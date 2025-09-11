@@ -1,7 +1,4 @@
-package com.example.spring_2.dto;
-
-import lombok.Getter;
-import lombok.Setter;
+package com.example.spring_2.dto.request;
 
 public class AutorCreateRequest {
     private String dni;

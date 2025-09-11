@@ -27,4 +27,6 @@ public class EditorialEntity {
     private int numeroTrabajadores; // numero_trabajadores
     private String direccion; //direccion
     private boolean estado; // default true
+    private Date createdAt;
+    private Date updatedAt;
 }

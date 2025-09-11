@@ -1,7 +1,7 @@
 package com.example.spring_2.service.impl;
 
-import com.example.spring_2.dto.AutorCreateRequest;
-import com.example.spring_2.dto.ReniecResponse;
+import com.example.spring_2.dto.request.AutorCreateRequest;
+import com.example.spring_2.dto.response.ReniecResponse;
 import com.example.spring_2.entity.AutorEntity;
 import com.example.spring_2.feignClient.ReniecClient;
 import com.example.spring_2.repository.AutorRepository;
@@ -15,7 +15,7 @@ import java.util.List;
 public class AutorServiceImpl implements AutorService {
     private AutorRepository autorRepository;
     private ReniecClient reniecClient;
-    @Value("${reniec.token}")
+    @Value("${api.token}")
     private String token;
     public AutorServiceImpl(AutorRepository autorRepository, ReniecClient reniecClient) {
         this.autorRepository = autorRepository;
