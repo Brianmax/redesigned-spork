@@ -1,6 +1,7 @@
 package com.example.spring_2.service.impl;
 
 import com.example.spring_2.dto.request.AutorCreateRequest;
+import com.example.spring_2.dto.response.AutorResponse;
 import com.example.spring_2.dto.response.ReniecResponse;
 import com.example.spring_2.entity.AutorEntity;
 import com.example.spring_2.feignClient.ReniecClient;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class AutorServiceImpl implements AutorService {
     private AutorRepository autorRepository;
@@ -52,8 +55,21 @@ public class AutorServiceImpl implements AutorService {
     }
 
     @Override
-    public AutorEntity findById(String dni) {
-        return null;
+    public AutorResponse findById(String dni) {
+        Optional<AutorEntity> autorOptional = autorRepository.findById(dni);
+
+        if (autorOptional.isEmpty()) {
+            // todo: retornar mensaje 404
+            return null;
+        }
+        AutorEntity autorBd = autorOptional.get();
+        return new AutorResponse(
+                autorBd.getNombre(),
+                autorBd.getApellidoPaterno(),
+                autorBd.getApellidoMaterno(),
+                autorBd.getNumLibros(),
+                autorBd.getNacionalidad()
+        );
     }
 
     @Override
