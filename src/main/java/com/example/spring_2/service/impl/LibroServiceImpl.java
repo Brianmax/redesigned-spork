@@ -2,6 +2,7 @@ package com.example.spring_2.service.impl;
 
 import com.example.spring_2.dto.request.LibroCreateRequest;
 import com.example.spring_2.dto.response.AutorResponse;
+import com.example.spring_2.dto.response.InfoAutorResponse;
 import com.example.spring_2.dto.response.LibroResponse;
 import com.example.spring_2.entity.AutorEntity;
 import com.example.spring_2.entity.EditorialEntity;
@@ -11,6 +12,8 @@ import com.example.spring_2.repository.EditorialRepository;
 import com.example.spring_2.repository.LibroRepository;
 import com.example.spring_2.service.LibroService;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class LibroServiceImpl implements LibroService {
@@ -41,7 +44,14 @@ public class LibroServiceImpl implements LibroService {
         LibroEntity libroEntity = new LibroEntity();
         libroEntity.setIsbn(request.getIsbn());
         libroEntity.setAnioPublicacion(request.getAnioPublicacion());
-
+        libroEntity.setTitulo(request.getTitulo());
+        libroEntity.setNumeroPaginas(request.getNumeroPaginas());
+        libroEntity.setIdioma(request.getIdioma());
+        libroEntity.setCategoria(request.getCategoria());
+        libroEntity.setEdicion(request.getEdicion());
+        libroEntity.setDescripcion(request.getDescripcion());
+        libroEntity.setCreatedAt(new Date());
+        libroEntity.setEstado(true);
         // .... //
 
         libroEntity.setAutorEntity(autorBd);
@@ -54,5 +64,22 @@ public class LibroServiceImpl implements LibroService {
         libroRepository.save(libroEntity);
 
         // todo: Convertir libroEntity a libroResponse
+        InfoAutorResponse infoAutorResponse = new InfoAutorResponse(
+                autorBd.getNombre(),
+                autorBd.getApellidoPaterno(),
+                autorBd.getApellidoMaterno()
+                );
+        LibroResponse libroResponse = new LibroResponse();
+        libroResponse.setIsbn(isbn);
+        libroResponse.setTitulo(libroEntity.getTitulo());
+        libroEntity.setNumeroPaginas(libroEntity.getNumeroPaginas());
+        libroResponse.setAnioPublicacion(libroEntity.getAnioPublicacion());
+        libroResponse.setIdioma(libroEntity.getIdioma());
+        libroResponse.setCategoria(libroEntity.getCategoria());
+        libroResponse.setEdicion(libroEntity.getEdicion());
+        libroResponse.setDescripcion(libroEntity.getDescripcion());
+        libroResponse.setInfoAutorResponse(infoAutorResponse);
+        libroResponse.setEditorial(editorialBd.getNombre());
+        return libroResponse;
     }
 }

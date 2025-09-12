@@ -15,14 +15,6 @@ public class LibroResponse {
     private String categoria;
     private String edicion;
     private String descripcion;
-    private InfoAutor infoAutor;
+    private InfoAutorResponse infoAutorResponse;
     private String editorial;
-
-    @Getter
-    @Setter
-    public class InfoAutor {
-        private String nombre;
-        private String apellidoPaterno;
-        private String apellidoMaterno;
-    }
 }

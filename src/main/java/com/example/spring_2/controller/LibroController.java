@@ -1,25 +1,26 @@
 package com.example.spring_2.controller;
 
+import com.example.spring_2.dto.request.LibroCreateRequest;
+import com.example.spring_2.dto.response.LibroResponse;
 import com.example.spring_2.entity.LibroEntity;
 import com.example.spring_2.repository.LibroRepository;
 import com.example.spring_2.service.LibroService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/libro")
 public class LibroController {
-    private final LibroRepository libroRepository;
+    private final LibroService libroService;
 
-    public LibroController(LibroRepository libroRepository) {
-        this.libroRepository = libroRepository;
+
+    public LibroController(LibroService libroService) {
+        this.libroService = libroService;
     }
 
-    @GetMapping()
-    public List<LibroEntity> findAll() {
-        return libroRepository.findAll();
+    @PostMapping("/save")
+    public LibroResponse createLibro(@RequestBody LibroCreateRequest request) {
+        return libroService.createLibro(request);
     }
 }
