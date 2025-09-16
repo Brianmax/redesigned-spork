@@ -2,23 +2,31 @@ package com.example.spring_2.security;
 
 import ch.qos.logback.core.util.StringUtil;
 import com.example.spring_2.service.JwtService;
+import com.example.spring_2.service.impl.UserDetaisServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.catalina.security.SecurityClassLoad;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Objects;
 
+@Component
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+    private final UserDetaisServiceImpl userDetaisService;
 
-    public JwtFilter(JwtService jwtService) {
+    public JwtFilter(JwtService jwtService, UserDetaisServiceImpl userDetaisService) {
         this.jwtService = jwtService;
+        this.userDetaisService = userDetaisService;
     }
 
     @Override
@@ -32,7 +40,14 @@ public class JwtFilter extends OncePerRequestFilter {
         String username = jwtService.extractUsername(jwt);
 
         if(Objects.nonNull(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // todo: setear la sesion en el security context holder
+            UserDetails userDetails = userDetaisService.loadUserByUsername(username);
+            if (jwtService.validateToken(jwt, userDetails)) {
+                SecurityContext securityContext = SecurityContextHolder.getContext();
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                securityContext.setAuthentication(auth);
+                SecurityContextHolder.setContext(securityContext);
+            }
         }
         filterChain.doFilter(request, response);
     }
