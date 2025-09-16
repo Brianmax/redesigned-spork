@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Generated;
 import lombok.Getter;
 
+import java.util.Date;
+
 
 @Entity
 @Table(name = "usuario")

@@ -18,7 +18,6 @@ import java.util.Date;
 public class JwtServiceimpl implements JwtService {
     @Override
     public String generateToken(UserDetails userDetails) {
-        Claims
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
