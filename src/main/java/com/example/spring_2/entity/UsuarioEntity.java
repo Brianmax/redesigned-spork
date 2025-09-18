@@ -1,10 +1,6 @@
 package com.example.spring_2.entity;
 
 import jakarta.persistence.*;
-import lombok.Generated;
-import lombok.Getter;
-
-import java.util.Date;
 
 
 @Entity
@@ -13,7 +9,7 @@ public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usuario_id")
-    private String userId;
+    private int userId;
     private String username;
     private String password;
 
@@ -29,11 +25,11 @@ public class UsuarioEntity {
         this.roleEntity = roleEntity;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
