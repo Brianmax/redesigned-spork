@@ -30,8 +30,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/usuario/login").permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/usuario/login").
+                        permitAll().
+                        requestMatchers("/api/v1/usuario/save").
+                        hasAnyAuthority("ADMIN"))
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

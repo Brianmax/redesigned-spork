@@ -5,6 +5,7 @@ import com.example.spring_2.dto.response.LibroResponse;
 import com.example.spring_2.entity.LibroEntity;
 import com.example.spring_2.repository.LibroRepository;
 import com.example.spring_2.service.LibroService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class LibroController {
         this.libroService = libroService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public LibroResponse createLibro(@RequestBody LibroCreateRequest request) {
         return libroService.createLibro(request);
