@@ -30,9 +30,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/usuario/login").
+                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/usuario/login", "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**").
                         permitAll().
-                        requestMatchers("/api/v1/usuario/save").
+                        requestMatchers("/api/v1/usuario/save", "api/v1/libro/save").
                         hasAnyAuthority("ADMIN"))
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
