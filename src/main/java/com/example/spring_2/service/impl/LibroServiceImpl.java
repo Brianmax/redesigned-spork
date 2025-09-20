@@ -1,7 +1,6 @@
 package com.example.spring_2.service.impl;
 
 import com.example.spring_2.dto.request.LibroCreateRequest;
-import com.example.spring_2.dto.response.AutorResponse;
 import com.example.spring_2.dto.response.InfoAutorResponse;
 import com.example.spring_2.dto.response.LibroResponse;
 import com.example.spring_2.entity.AutorEntity;
@@ -11,9 +10,13 @@ import com.example.spring_2.repository.AutorRepository;
 import com.example.spring_2.repository.EditorialRepository;
 import com.example.spring_2.repository.LibroRepository;
 import com.example.spring_2.service.LibroService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class LibroServiceImpl implements LibroService {
@@ -81,5 +84,31 @@ public class LibroServiceImpl implements LibroService {
         libroResponse.setInfoAutorResponse(infoAutorResponse);
         libroResponse.setEditorial(editorialBd.getNombre());
         return libroResponse;
+    }
+
+    @Override
+    public List<LibroResponse> findLibros(Pageable pageable) {
+        Page<LibroEntity> libroEntities = libroRepository.findAll(pageable);
+        List<LibroResponse> libroResponses = new ArrayList<>();
+        for(LibroEntity entity: libroEntities) {
+            LibroResponse libroResponse = new LibroResponse();
+            libroResponse.setIsbn(entity.getIsbn());
+            libroResponse.setTitulo(entity.getTitulo());
+            libroResponse.setAnioPublicacion(entity.getAnioPublicacion());
+            libroResponse.setIdioma(entity.getIdioma());
+            libroResponse.setCategoria(entity.getCategoria());
+            libroResponse.setEdicion(entity.getDescripcion());
+            libroResponse.setDescripcion(entity.getDescripcion());
+            AutorEntity autorEntity = entity.getAutorEntity();
+            InfoAutorResponse infoAutorResponse = new InfoAutorResponse(
+                    autorEntity.getNombre(),
+                    autorEntity.getApellidoPaterno(),
+                    autorEntity.getApellidoMaterno()
+            );
+            libroResponse.setInfoAutorResponse(infoAutorResponse);
+            libroResponse.setEditorial(entity.getEditorialEntity().getNombre());
+            libroResponses.add(libroResponse);
+        }
+        return libroResponses;
     }
 }
