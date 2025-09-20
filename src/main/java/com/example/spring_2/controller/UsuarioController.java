@@ -7,6 +7,7 @@ import com.example.spring_2.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,8 +26,30 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    @Operation(summary = "Endpoint para crear un usuario")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Se creo el usuario satisfactoriamente",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(
+                            "{\n" +
+                            "    \"userId\": 4,\n" +
+                            "    \"username\": \"juan13\",\n" +
+                            "    \"role\": \"USER\"\n" +
+                            "}"), schema = @Schema(implementation = UsuarioResponse.class)
+                    )
+
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Usuario no autenticado"
+            )
+    })
     @PostMapping("/save")
-    public UsuarioResponse createUsuario(@RequestBody UsuarioCreateRequest request) {
+    public UsuarioResponse createUsuario(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Para usar este metodo el token debe de ser proporcionado de manera obligatoria", required = true)
+            @RequestBody UsuarioCreateRequest request
+    ) {
         return usuarioService.createUser(request);
     }
 
